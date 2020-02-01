@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: piggyback-notification-production
+  namespace: production
+spec:
+  replicas: 1
+  progressDeadlineSeconds: 10
+  template:
+    metadata:
+      labels:
+        app: piggyback-notification
+        env: production
+    spec:
+      containers:
+      - image: gcr.io/omega-palace-254907/piggy1-notification:v10
+        name: piggyback-prod-runner-notification
+        env:
+          - name: JASYPT_ENCRYPTOR_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: jasypt-password
+                key: password
+        resources:
+          limits:
+            memory: "384Mi"
+            cpu: "200m"
+        imagePullPolicy: Always
+        ports:
+        - name: piggy-notif
+          containerPort: 8086
+        readinessProbe:
+          httpGet:
+            path: /swagger-ui.html
+            port: 8086
+status: {}

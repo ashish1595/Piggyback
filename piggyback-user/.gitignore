@@ -1,0 +1,8 @@
+target/
+.idea/
+.settings/
+user.iml
+.classpath
+.project
+secret-storage.json
+kub-deploy.json
